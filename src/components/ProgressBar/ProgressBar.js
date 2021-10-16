@@ -24,6 +24,7 @@ const MediumBackground = styled(BaseBackground)`
 const LargeBackground = styled(BaseBackground)`
   border-radius: 8px;
   height: 1.5rem;
+  padding: 4px;
 `;
 
 const backgrounds = {
@@ -34,13 +35,6 @@ const backgrounds = {
 
 const Indicator = styled.div`
   background-color: ${COLORS.primary};
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  border-top-right-radius: ${props => getIndicatorRightRadius(props.value)}px;
-  border-bottom-right-radius: ${props => getIndicatorRightRadius(props.value)}px;
-  position: absolute;
-  top: 0;
-  left: 0;
   width: ${props => props.value}%;
 
   ${SmallBackground} & {
@@ -53,39 +47,23 @@ const Indicator = styled.div`
 
   ${LargeBackground} & {
     height: 1rem;
-    margin: 0.25rem;
-
-    // Because of the extra margin on this variant, we need to make sure we never exceed full width
-    // minus that margin.
-    max-width: calc(100% - 0.5rem);
   }
 `;
 
-function getIndicatorRightRadius(value) {
-  switch (value) {
-    case 100: return 4;
-    case 99: return 3;
-    case 98: return 2;
-    case 97: return 1;
-    default: return 0;
-  }
-}
+const OverflowWrapper = styled.div`
+  border-radius: 4px;
+  overflow: hidden;
+`;
 
 const ProgressBar = ({ value, size }) => {
   const Background = backgrounds[size] || SmallBackground;
-  const parsedValue = Math.max(
-    Math.min(
-      Number(value) || 0,
-      100,
-    ),
-    0,
-  );
-
   return (
     <>
       <VisuallyHidden>{value} out of 100</VisuallyHidden>
       <Background>
-        <Indicator value={parsedValue} />
+        <OverflowWrapper>
+          <Indicator value={value} />
+        </OverflowWrapper>
       </Background>
     </>
   );
