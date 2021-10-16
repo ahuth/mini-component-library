@@ -35,7 +35,7 @@ const backgrounds = {
 
 const Indicator = styled.div`
   background-color: ${COLORS.primary};
-  width: ${props => props.value}%;
+  width: var(--width, 0);
 
   ${SmallBackground} & {
     height: 0.5rem;
@@ -62,7 +62,7 @@ const ProgressBar = ({ value, size }) => {
       <VisuallyHidden>{value} out of 100</VisuallyHidden>
       <Background>
         <OverflowWrapper>
-          <Indicator value={value} />
+          <Indicator style={{ '--width': value + '%' }} />
         </OverflowWrapper>
       </Background>
     </>
